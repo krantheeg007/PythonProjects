@@ -17,5 +17,5 @@ def calculate_market_cap(price_per_share: int,num_of_shares: int) -> int:
   market_cap=price_per_share*num_of_shares
   return market_cap
 
-calculate_market_cap(215,1000)
+print(calculate_market_cap(215,1000));
 

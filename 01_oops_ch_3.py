@@ -24,7 +24,6 @@ We refactor the Chapter 2 code into a `RatioCalculator` class.
 import csv, io
 from typing import Dict, List
 
-
 class RatioCalculator:
     """Reads stock data and computes financial ratios."""
 
@@ -54,17 +53,29 @@ class RatioCalculator:
 
 """### **3.2 Use the class**"""
 
-from google.colab import files
 
-# Upload in.csv
-uploaded = files.upload()
 
-import io
+import os
 
-filename = list(uploaded.keys())[0]
-CSV_DATA = uploaded[filename].decode("utf-8")
+filename = "in.csv"
 
-print(f"✅ Loaded '{filename}' for Chapter 3")
+# If in.csv does not exist, create a default sample file
+if not os.path.exists(filename):
+    sample_data = """ticker,price,book_ratio,eps
+AAPL,175.50,4.2,8.1
+MSFT,420.20,12.5,11.5
+GOOG,170.10,6.1,5.8
+AMZN,180.40,8.3,2.9
+TSLA,175.00,9.0,3.1
+"""
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(sample_data)
+    print(f"[Warning] '{filename}' not found. Created a sample '{filename}' for demonstration.")
+
+with open(filename, "r", encoding="utf-8") as f:
+    CSV_DATA = f.read()
+
+print(f"[OK] Loaded '{filename}' for Chapter 3")
 
 calc    = RatioCalculator(CSV_DATA)
 results = calc.run()
