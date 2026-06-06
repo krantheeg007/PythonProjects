@@ -24,17 +24,27 @@ Original file is located at
 ### **2.0 Upload files to colab**
 """
 
-from google.colab import files
+import os
 
-# This will prompt you to select the file from your local machine. Upload in.csv.
-uploaded = files.upload()
+filename = "in.csv"
 
-import io
+# If in.csv does not exist, create a default sample file
+if not os.path.exists(filename):
+    sample_data = """ticker,price,book_ratio,eps
+AAPL,175.50,4.2,8.1
+MSFT,420.20,12.5,11.5
+GOOG,170.10,6.1,5.8
+AMZN,180.40,8.3,2.9
+TSLA,175.00,9.0,3.1
+"""
+    with open(filename, "w", encoding="utf-8") as f:
+        f.write(sample_data)
+    print(f"[Warning] '{filename}' not found. Created a sample '{filename}' for demonstration.")
 
-filename = list(uploaded.keys())[0]
-CSV_DATA = uploaded[filename].decode("utf-8")
+with open(filename, "r", encoding="utf-8") as f:
+    CSV_DATA = f.read()
 
-print(f"✅ Loaded '{filename}'")
+print(f"[OK] Loaded '{filename}'")
 print(CSV_DATA[:300])
 
 """### **2.2 The `safe_ratio` helper**"""
@@ -158,7 +168,7 @@ if rows:
         # Write all data rows
         writer.writerows(rows)
 
-    print(f"✅ Successfully wrote data to '{output_filename}'")
+    print(f"[OK] Successfully wrote data to '{output_filename}'")
 
     # Optional: Display the content of the created CSV file
     with open(output_filename, 'r') as f:
